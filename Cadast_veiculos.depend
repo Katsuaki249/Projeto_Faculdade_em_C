@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1664322523 source:c:\users\202216522\documents\c\cadast_veiculos\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+
