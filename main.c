@@ -84,7 +84,7 @@ void main(){
 void cadast_veiculo(FILE *file){
 
     car car;
-
+    // leitura dos dados via usuario
     printf("Digite o modelo do veiculo: ");
     setbuf(stdin, NULL);
     gets(car.model);
@@ -101,15 +101,17 @@ void cadast_veiculo(FILE *file){
     printf("Digite o preco do veiculo: ");
     scanf("%f", &car.price);
 
+    // upper case nas strings
     toUpper(car.model);
     toUpper(car.brand);
     toUpper(car.color);
 
+    // Abrindo arquivo para escrever os dados
     if(!(file = fopen("db_veiculos", "a"))){
         perror("ERROR");
         exit(1);
     } else {
-        fprintf(file, "%s;%s;%s;%i;%.2f;%.2f", car.model, car.brand, car.color, car.year, car.weight, car.price);
+        fprintf(file, "%s;%s;%s;%i;%.2f;%.2f\n", car.model, car.brand, car.color, car.year, car.weight, car.price);
         printf("Cadastrado com sucesso\n");
     }
 
@@ -121,7 +123,7 @@ void consulta_veiculo(FILE *file){
 
     car car;
     char temp[255];
-
+    // Abrindo arquivo para leitura e exibição dos dados
     if(!(file = fopen("db_veiculos", "r"))){
         perror("ERROR");
         exit(1);
@@ -148,6 +150,7 @@ void editar_veiculo(){
 void excluir_veiculo(){
 
 }
+// Tranforma todos os caracteres de uma string em upper case
 void toUpper(char *str){
     int i;
     for(i = 0; i < (strlen(str)); i++){
