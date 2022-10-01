@@ -84,8 +84,9 @@ void cadast_veiculo(FILE *arq){
     printf("Digite o preco do veículo");
     scanf("%f", &preco);
 
-    if(!(arq = fopen("db_veiculos.csv", "w"))){
+    if(!(arq = fopen("db_veiculos", "a"))){
         printf("Erro ao abrir o arquivo.\n");
+        exit(1);
     } else {
         fprintf(arq, "%s;%s;%s;%i;%.2f;%.2f", modelo, marca, cor, ano, peso, preco);
         printf("Cadastrado com sucesso");
