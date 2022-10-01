@@ -7,6 +7,7 @@
 
 typedef struct car{
 
+    int id;
     char model[MAX_LENGTH];
     char brand[MAX_LENGTH];
     char color[MAX_LENGTH];
@@ -65,7 +66,6 @@ void main(){
             // Sair do programa
             case 5:
                 printf("Encerrando...\n");
-                system("PAUSE");
             break;
 
             default:
@@ -76,6 +76,9 @@ void main(){
         }
 
     }while(op != 5);
+
+    exit(1);
+
 }
 // função que inclui um novo cadastro
 void cadast_veiculo(FILE *file){
@@ -98,6 +101,10 @@ void cadast_veiculo(FILE *file){
     printf("Digite o preco do veiculo: ");
     scanf("%f", &car.price);
 
+    toUpper(car.model);
+    toUpper(car.brand);
+    toUpper(car.color);
+
     if(!(file = fopen("db_veiculos", "a"))){
         perror("ERROR");
         exit(1);
@@ -113,7 +120,7 @@ void cadast_veiculo(FILE *file){
 void consulta_veiculo(FILE *file){
 
     car car;
-    char temp[80];
+    char temp[255];
 
     if(!(file = fopen("db_veiculos", "r"))){
         perror("ERROR");
@@ -121,7 +128,7 @@ void consulta_veiculo(FILE *file){
     } else {
         printf("->\n");
 
-        while(fgets(temp, 80, file) != NULL){
+        while(fgets(temp, 255, file) != NULL){
             printf("\tMODELO: %s\n", strtok(temp, ";"));
             printf("\tMARCA: %s\n", strtok(NULL, ";"));
             printf("\tCOR: %s\n", strtok(NULL, ";"));
@@ -130,14 +137,20 @@ void consulta_veiculo(FILE *file){
             printf("\tPRECO: %s\n", strtok(NULL, ";"));
         }
 
-
-
-
         fclose(file);
     }
 }
 // função que edita um registro
-void editar(){
+void editar_veiculo(){
 
 }
 // função que deleta um registro
+void excluir_veiculo(){
+
+}
+void toUpper(char *str){
+    int i;
+    for(i = 0; i < (strlen(str)); i++){
+        str[i] = toupper(str[i]);
+    }
+}
