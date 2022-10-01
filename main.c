@@ -9,7 +9,10 @@ typedef struct car{
 
     char model[MAX_LENGTH];
     char brand[MAX_LENGTH];
-
+    char color[MAX_LENGTH];
+    int year;
+    float weight;
+    float price;
 
 }car;
 
@@ -19,7 +22,6 @@ void main(){
 
     int op;
     FILE *file;
-
 
     do{
 
@@ -34,9 +36,11 @@ void main(){
 
             // Inseri um novo dado
             case 1:
+
                 printf("Cadastrar: \n");
                 cadast_veiculo(file);
                 system("PAUSE");
+
             break;
 
             // Consulta a lista de dados armazenados
@@ -73,37 +77,35 @@ void main(){
     }while(op != 5);
 }
 // função que inclui um novo cadastro
-void cadast_veiculo(FILE *arq){
+void cadast_veiculo(FILE *file){
 
-    char modelo[70], cor[20], marca[50];
-    int ano;
-    float peso, preco;
+    car car;
 
     printf("Digite o modelo do veiculo: \n");
     setbuf(stdin, NULL);
-    gets(modelo);
+    gets(car.model);
     printf("Digite a marca do veiculo: \n");
     setbuf(stdin, NULL);
-    gets(marca);
+    gets(car.brand);
     printf("Digite a cor do veiculo: \n");
     setbuf(stdin, NULL);
-    gets(cor);
+    gets(car.color);
     printf("Digite o ano do veículo");
-    scanf("%i", &ano);
+    scanf("%i", &car.year);
     printf("Digite o peso do veículo");
-    scanf("%f", &peso);
+    scanf("%f", &car.weight);
     printf("Digite o preco do veículo");
-    scanf("%f", &preco);
+    scanf("%f", &car.price);
 
-    if(!(arq = fopen("db_veiculos", "a"))){
+    if(!(file = fopen("db_veiculos", "a"))){
         printf("Erro ao abrir o arquivo.\n");
         exit(1);
     } else {
-        fprintf(arq, "%s;%s;%s;%i;%.2f;%.2f", modelo, marca, cor, ano, peso, preco);
+        fprintf(file, "%s;%s;%s;%i;%.2f;%.2f", car.model, car.brand, car.color, car.year, car.weight, car.price);
         printf("Cadastrado com sucesso");
     }
 
-    fclose(arq);
+    fclose(file);
 
 }
 // função que mostra na tela todos os registros
