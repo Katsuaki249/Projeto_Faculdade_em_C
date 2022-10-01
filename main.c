@@ -46,6 +46,7 @@ void main(){
             // Consulta a lista de dados armazenados
             case 2:
                 printf("Consultar: \n");
+                consulta_veiculo(file);
                 system("PAUSE");
             break;
 
@@ -68,7 +69,7 @@ void main(){
             break;
 
             default:
-                printf("Opção inválida!\n");
+                printf("Opçco invalida!\n");
                 system("PAUSE");
             break;
 
@@ -81,36 +82,59 @@ void cadast_veiculo(FILE *file){
 
     car car;
 
-    printf("Digite o modelo do veiculo: \n");
+    printf("Digite o modelo do veiculo: ");
     setbuf(stdin, NULL);
     gets(car.model);
-    printf("Digite a marca do veiculo: \n");
+    printf("Digite a marca do veiculo: ");
     setbuf(stdin, NULL);
     gets(car.brand);
-    printf("Digite a cor do veiculo: \n");
+    printf("Digite a cor do veiculo: ");
     setbuf(stdin, NULL);
     gets(car.color);
-    printf("Digite o ano do veículo");
+    printf("Digite o ano do veiculo: ");
     scanf("%i", &car.year);
-    printf("Digite o peso do veículo");
+    printf("Digite o peso do veiculo: ");
     scanf("%f", &car.weight);
-    printf("Digite o preco do veículo");
+    printf("Digite o preco do veiculo: ");
     scanf("%f", &car.price);
 
     if(!(file = fopen("db_veiculos", "a"))){
-        printf("Erro ao abrir o arquivo.\n");
+        perror("ERROR");
         exit(1);
     } else {
         fprintf(file, "%s;%s;%s;%i;%.2f;%.2f", car.model, car.brand, car.color, car.year, car.weight, car.price);
-        printf("Cadastrado com sucesso");
+        printf("Cadastrado com sucesso\n");
     }
 
     fclose(file);
 
 }
 // função que mostra na tela todos os registros
-void consulta_veiculo(){
+void consulta_veiculo(FILE *file){
 
+    car car;
+    char temp[80];
+
+    if(!(file = fopen("db_veiculos", "r"))){
+        perror("ERROR");
+        exit(1);
+    } else {
+        printf("->\n");
+
+        while(fgets(temp, 80, file) != NULL){
+            printf("\tMODELO: %s\n", strtok(temp, ";"));
+            printf("\tMARCA: %s\n", strtok(NULL, ";"));
+            printf("\tCOR: %s\n", strtok(NULL, ";"));
+            printf("\tANO: %s\n", strtok(NULL, ";"));
+            printf("\tPESO: %s\n", strtok(NULL, ";"));
+            printf("\tPRECO: %s\n", strtok(NULL, ";"));
+        }
+
+
+
+
+        fclose(file);
+    }
 }
 // função que edita um registro
 void editar(){
