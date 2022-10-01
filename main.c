@@ -3,20 +3,31 @@
 #include <string.h>
 #include <ctype.h>
 
+#define MAX_LENGTH 100
+
+typedef struct car{
+
+    char model[MAX_LENGTH];
+    char brand[MAX_LENGTH];
+
+
+}car;
 
 
 // programa principal
 void main(){
 
     int op;
-    FILE *arq;
+    FILE *file;
 
 
     do{
 
         system("CLS");
 
-        printf("1-cadastrar\n2-consultar\n3-editar\n4-excluir\n5-sair\n");
+        printf("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
+        printf("= 1-cadastrar   2-consultar   3-editar   4-excluir   5-sair =\n");
+        printf("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
         scanf("%i", &op);
 
         switch(op){
@@ -24,7 +35,7 @@ void main(){
             // Inseri um novo dado
             case 1:
                 printf("Cadastrar: \n");
-                cadast_veiculo(arq);
+                cadast_veiculo(file);
                 system("PAUSE");
             break;
 
