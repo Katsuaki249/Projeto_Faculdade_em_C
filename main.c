@@ -111,7 +111,7 @@ void cadast_veiculo(FILE *file){
 
     // Abrindo arquivo para escrever os dados
     if(!(file = fopen("db_veiculos", "a+"))){
-        perror("ERROR");
+        printf("ERRO: Nao foi possivel localizar o arquivo");
         exit(1);
     } else {
         fprintf(file, "%i;%s;%s;%s;%i;%.2f;%.2f\n", geraId(), car.model, car.brand, car.color, car.year, car.weight, car.price);
@@ -129,7 +129,7 @@ void consulta_veiculo(FILE *file){
     int id;
     // Abrindo arquivo para leitura e exibi��o dos dados
     if(!(file = fopen("db_veiculos", "r"))){
-        perror("ERROR");
+        printf("ERRO: Nao foi possivel localizar o arquivo");
         exit(1);
     } else {
 
@@ -153,7 +153,7 @@ void editar_veiculo(FILE *file){
     char temp[255];
     // Abrindo arquivo para leitura e exibicao dos dados
     if(!(file = fopen("db_veiculos", "r+"))){
-        perror("ERROR");
+        printf("ERRO: Nao foi possivel localizar o arquivo");
         exit(1);
     } else {
 
@@ -181,7 +181,7 @@ void excluir_veiculo(FILE *file){
     fpos_t position;
 
     if(!(file = fopen("db_veiculos", "r+"))){
-        ferror("ERROR");
+        printf("ERRO: Nao foi possivel localizar o arquivo");
         exit(1);
     } else {
 
@@ -219,7 +219,7 @@ int geraId(FILE *file){
     int id;
 
     if(!(file = fopen("db_veiculos", "r"))){
-        perror("ERROR");
+        printf("ERRO: Nao foi possivel localizar o arquivo");
         exit(1);
     } else {
 
@@ -251,7 +251,7 @@ void consult_indiv(FILE *file){
     int id, b;  // B de boolean
 
     if(!(file = fopen("db_veiculos", "r"))){
-        ferror("ERROR");
+        printf("ERRO: Nao foi possivel localizar o arquivo");
         exit(1);
     } else {
 
