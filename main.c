@@ -28,7 +28,7 @@ void main(){
 
         system("CLS");
 
-        printf("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
+        printf("= Menu Inicial -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
         printf("= 1-cadastrar   2-consultar   3-editar   4-excluir   5-sair =\n");
         printf("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
         scanf("%i", &op);
@@ -37,17 +37,14 @@ void main(){
 
             // Inseri um novo dado
             case 1:
-
                 printf("Cadastrar: \n");
                 cadast_veiculo(file);
                 system("PAUSE");
-
             break;
 
             // Consulta a lista de dados armazenados
             case 2:
-                printf("Consultar: \n");
-                consulta_veiculo(file);
+                consult_menu(file);
                 system("PAUSE");
             break;
 
@@ -60,6 +57,7 @@ void main(){
             // Excluir algum dado
             case 4:
                 printf("Excluir: \n");
+                excluir_veiculo(file);
                 system("PAUSE");
             break;
 
@@ -68,8 +66,12 @@ void main(){
                 printf("Encerrando...\n");
             break;
 
+            case 6: // opcao para testar funcoes
+                exit(1);
+            break;
+
             default:
-                printf("Opçco invalida!\n");
+                printf("Opcao invalida!\n");
                 system("PAUSE");
             break;
 
@@ -79,11 +81,12 @@ void main(){
 
     exit(1);
 
-}
-// função que inclui um novo cadastro
+} // FIM MAIN
+// funï¿½ï¿½o que inclui um novo cadastro
 void cadast_veiculo(FILE *file){
 
     car car;
+
     // leitura dos dados via usuario
     printf("Digite o modelo do veiculo: ");
     setbuf(stdin, NULL);
@@ -107,31 +110,32 @@ void cadast_veiculo(FILE *file){
     toUpper(car.color);
 
     // Abrindo arquivo para escrever os dados
-    if(!(file = fopen("db_veiculos", "a"))){
+    if(!(file = fopen("db_veiculos", "a+"))){
         perror("ERROR");
         exit(1);
     } else {
-        fprintf(file, "%s;%s;%s;%i;%.2f;%.2f\n", car.model, car.brand, car.color, car.year, car.weight, car.price);
+        fprintf(file, "%i;%s;%s;%s;%i;%.2f;%.2f\n", geraId(), car.model, car.brand, car.color, car.year, car.weight, car.price);
         printf("Cadastrado com sucesso\n");
     }
 
     fclose(file);
 
 }
-// função que mostra na tela todos os registros
+// funï¿½ï¿½o que mostra na tela todos os registros
 void consulta_veiculo(FILE *file){
 
     car car;
     char temp[255];
-    // Abrindo arquivo para leitura e exibição dos dados
+    int id;
+    // Abrindo arquivo para leitura e exibiï¿½ï¿½o dos dados
     if(!(file = fopen("db_veiculos", "r"))){
         perror("ERROR");
         exit(1);
     } else {
-        printf("->\n");
 
         while(fgets(temp, 255, file) != NULL){
-            printf("\tMODELO: %s\n", strtok(temp, ";"));
+            printf("\tID: %i\n", atoi(strtok(temp, ";")));
+            printf("\tMODELO: %s\n", strtok(NULL, ";"));
             printf("\tMARCA: %s\n", strtok(NULL, ";"));
             printf("\tCOR: %s\n", strtok(NULL, ";"));
             printf("\tANO: %s\n", strtok(NULL, ";"));
@@ -142,13 +146,62 @@ void consulta_veiculo(FILE *file){
         fclose(file);
     }
 }
-// função que edita um registro
-void editar_veiculo(){
+// funcao que edita um registro
+void editar_veiculo(FILE *file){
 
+    int item;
+    char temp[255];
+    // Abrindo arquivo para leitura e exibicao dos dados
+    if(!(file = fopen("db_veiculos", "r+"))){
+        perror("ERROR");
+        exit(1);
+    } else {
+
+        while(fgets(temp, 255, file) != NULL){
+            printf("\tMODELO: %s\n", strtok(temp, ";"));
+            printf("\tMARCA: %s\n", strtok(NULL, ";"));
+            printf("\tCOR: %s\n", strtok(NULL, ";"));
+            printf("\tANO: %s\n", strtok(NULL, ";"));
+            printf("\tPESO: %s\n", strtok(NULL, ";"));
+            printf("\tPRECO: %s\n", strtok(NULL, ";"));
+        }
+
+        printf("Informe o numero do item que deseja alterar: ");
+        scanf("%i", &item);
+
+        fclose(file);
+    }
 }
-// função que deleta um registro
-void excluir_veiculo(){
+// funcao que deleta um registro
+void excluir_veiculo(FILE *file){
 
+    char temp[100];
+    char excl[] = {'E', 'X', 'C'};
+    int id, b;  // B de boolean
+    fpos_t position;
+
+    if(!(file = fopen("db_veiculos", "r+"))){
+        ferror("ERROR");
+        exit(1);
+    } else {
+
+        printf("Digite a posicao: \n");
+        scanf("%i", &id);
+
+        while(fgets(temp, 100, file) != NULL){
+
+            if(atoi(strtok(temp, ";")) == id - 1){
+
+                fseek(file, 0, SEEK_CUR);
+                fprintf("%i;", 0);
+
+
+                b = 1;
+            }
+        }
+        b == 1 ? printf("O registro foi removido!\n") : printf("Registro inexistente!\n");
+        fclose(file);
+    }
 }
 // Tranforma todos os caracteres de uma string em upper case
 void toUpper(char *str){
@@ -156,4 +209,102 @@ void toUpper(char *str){
     for(i = 0; i < (strlen(str)); i++){
         str[i] = toupper(str[i]);
     }
+}
+int geraId(FILE *file){
+
+    char temp[100];
+    int id;
+
+    if(!(file = fopen("db_veiculos", "r"))){
+        perror("ERROR");
+        exit(1);
+    } else {
+
+        id = 0;
+        while(fgets(temp, 100, file) != NULL){
+
+
+            //printf("ID: %i\n", atoi(strtok(temp, ";")));
+
+            /*do{
+
+                printf("%s\n", strtok(NULL, ";"));
+
+                i++;
+            }while(i != 1);*/
+
+            id++;
+        }
+
+        fclose(file);
+    }
+    //printf("%i\n", id + 1);
+    return id + 1;
+
+}
+void consult_indiv(FILE *file){
+
+    char temp[100];
+    int id, b;  // B de boolean
+
+    if(!(file = fopen("db_veiculos", "r"))){
+        ferror("ERROR");
+        exit(1);
+    } else {
+
+        printf("Digite o numero do ID: \n");
+        scanf("%i", &id);
+
+        while(fgets(temp, 100, file) != NULL){
+
+            if(atoi(strtok(temp, ";")) == id){
+                printf("\tMODELO: %s\n", strtok(NULL, ";"));
+                printf("\tMARCA: %s\n", strtok(NULL, ";"));
+                printf("\tCOR: %s\n", strtok(NULL, ";"));
+                printf("\tANO: %s\n", strtok(NULL, ";"));
+                printf("\tPESO: %s\n", strtok(NULL, ";"));
+                printf("\tPRECO: %s\n", strtok(NULL, ";"));
+                b = 1;
+            }
+        }
+        b == 1 ? printf("Registro encontrado!\n") : printf("Registro inexistente!\n");
+        fclose(file);
+    }
+}
+void consult_menu(FILE *file){
+
+    int op;
+
+    do{
+
+        system("CLS");
+
+        printf("= Consultar =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
+        printf("= 1-Listar Todos   2-consultar por ID    3-Voltar =\n");
+        printf("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
+
+        scanf("%i", &op);
+
+        switch(op){
+
+            case 1:
+                consulta_veiculo(file);
+                system("PAUSE");
+            break;
+
+            case 2:
+                consult_indiv(file);
+                system("PAUSE");
+            break;
+
+            case 3:
+                printf("voltando para o Menu Inicial...\n");
+            break;
+
+            default:
+                printf("Opacao invalida!\n");
+            break;
+
+        }
+    }while(op != 3);
 }
