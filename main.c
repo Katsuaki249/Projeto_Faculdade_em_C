@@ -207,7 +207,10 @@ void excluir_veiculo(FILE *file){
 void toUpper(char *str){
     int i;
     for(i = 0; i < (strlen(str)); i++){
-        str[i] = toupper(str[i]);
+
+        if(isalpha(str[i])){
+                str[i] = toupper(str[i]);
+        }
     }
 }
 int geraId(FILE *file){
