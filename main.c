@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <locale.h>
 
 #define MAX_LENGTH 100
 
@@ -20,6 +21,8 @@ typedef struct car{
 
 // programa principal
 void main(){
+
+    setlocale(LC_ALL, "Portuguese");
 
     int op;
     FILE *file;
