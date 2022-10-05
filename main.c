@@ -22,7 +22,7 @@ typedef struct car{
 // programa principal
 void main(){
 
-    //setlocale(LC_ALL, "Portuguese");
+    setlocale(LC_ALL, "Portuguese");
 
     int op;
     FILE *file;
@@ -150,10 +150,10 @@ void consulta_veiculo(FILE *file){
 }
 // funcao que edita um registro
 void editar_veiculo(FILE *file){
-    printf("ENTROU");
+
     int item, i = 0, op;
     char temp[255];
-    //car car[2];
+    car *car[5];
 
     // Abrindo arquivo para leitura e exibicao dos dados
     if(!(file = fopen("db_veiculos", "r+"))){
@@ -163,13 +163,13 @@ void editar_veiculo(FILE *file){
         printf("Arquivo foi aberto");
         while(fgets(temp, 255, file) != NULL){
 
-            strcpy(car[i].id, atoi(strtok(temp, ";")));
-            strcpy(car[i].model, strtok(NULL, ";"));
-            strcpy(car[i].brand, strtok(NULL, ";"));
-            strcpy(car[i].color, strtok(NULL, ";"));
-            strcpy(car[i].year, atoi(strtok(NULL, ";"));
-            strcpy(car[i].weight, atof(strtok(NULL, ";"));
-            strcpy(car[i].price, atof(strtok(NULL, ";"));
+            strcpy(car[i]->id, atoi(strtok(temp, ";")));
+            strcpy(car[i]->model, strtok(NULL, ";"));
+            strcpy(car[i]->brand, strtok(NULL, ";"));
+            strcpy(car[i]->color, strtok(NULL, ";"));
+            car[i]->year = atoi(strtok(NULL, ";"));
+            car[i]->weight = atof(strtok(NULL, ";"));
+            car[i]->price = atof(strtok(NULL, ";"));
             i++;
         }
 
@@ -183,7 +183,7 @@ void editar_veiculo(FILE *file){
         switch(op){
 
             case 1:
-                printf("%s", car[item].model);
+                printf("%s", car[item]->model);
             break;
 
         }
