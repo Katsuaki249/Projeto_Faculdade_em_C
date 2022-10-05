@@ -22,7 +22,7 @@ typedef struct car{
 // programa principal
 void main(){
 
-    setlocale(LC_ALL, "Portuguese");
+    //setlocale(LC_ALL, "Portuguese");
 
     int op;
     FILE *file;
@@ -53,7 +53,7 @@ void main(){
 
             // Editar algum dado
             case 3:
-                printf("Editar: \n");
+                editar_veiculo(file);
                 system("PAUSE");
             break;
 
@@ -113,7 +113,7 @@ void cadast_veiculo(FILE *file){
     toUpper(car.color);
 
     // Abrindo arquivo para escrever os dados
-    if(!(file = fopen("db_veiculos", "a+"))){
+    if(!(file = fopen("db_veiculos", "a"))){
         printf("ERRO: Nao foi possivel localizar o arquivo");
         exit(1);
     } else {
@@ -127,7 +127,6 @@ void cadast_veiculo(FILE *file){
 // fun��o que mostra na tela todos os registros
 void consulta_veiculo(FILE *file){
 
-    car car;
     char temp[255];
     int id;
     // Abrindo arquivo para leitura e exibi��o dos dados
@@ -151,26 +150,43 @@ void consulta_veiculo(FILE *file){
 }
 // funcao que edita um registro
 void editar_veiculo(FILE *file){
-
-    int item;
+    printf("ENTROU");
+    int item, i = 0, op;
     char temp[255];
+    //car car[2];
+
     // Abrindo arquivo para leitura e exibicao dos dados
     if(!(file = fopen("db_veiculos", "r+"))){
         printf("ERRO: Nao foi possivel localizar o arquivo");
         exit(1);
     } else {
-
+        printf("Arquivo foi aberto");
         while(fgets(temp, 255, file) != NULL){
-            printf("\tMODELO: %s\n", strtok(temp, ";"));
-            printf("\tMARCA: %s\n", strtok(NULL, ";"));
-            printf("\tCOR: %s\n", strtok(NULL, ";"));
-            printf("\tANO: %s\n", strtok(NULL, ";"));
-            printf("\tPESO: %s\n", strtok(NULL, ";"));
-            printf("\tPRECO: %s\n", strtok(NULL, ";"));
+
+            strcpy(car[i].id, atoi(strtok(temp, ";")));
+            strcpy(car[i].model, strtok(NULL, ";"));
+            strcpy(car[i].brand, strtok(NULL, ";"));
+            strcpy(car[i].color, strtok(NULL, ";"));
+            strcpy(car[i].year, atoi(strtok(NULL, ";"));
+            strcpy(car[i].weight, atof(strtok(NULL, ";"));
+            strcpy(car[i].price, atof(strtok(NULL, ";"));
+            i++;
         }
 
-        printf("Informe o numero do item que deseja alterar: ");
+        printf("Informe o ID do carro que deseja alterar: ");
         scanf("%i", &item);
+
+        printf("O que você deseja alterar?\n");
+        printf("1-Modelo\n2-Marca\n3-Cor\n4-Ano\n5-Peso\n6-Preço\n");
+        scanf("%i", op);
+
+        switch(op){
+
+            case 1:
+                printf("%s", car[item].model);
+            break;
+
+        }
 
         fclose(file);
     }
