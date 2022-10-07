@@ -53,6 +53,7 @@ void main(){
 
             // Editar algum dado
             case 3:
+                printf("Editar: \n");
                 editar_veiculo(file);
                 system("PAUSE");
             break;
@@ -151,15 +152,22 @@ void consulta_veiculo(FILE *file){
 // funcao que edita um registro
 void editar_veiculo(FILE *file){
 
+<<<<<<< HEAD
     int id, op, i, count, ret;
     char temp[255], aux[MAX_LENGTH];
     car car[5];
+=======
+    int item, i = 0, op;
+    char temp[255];
+    car *car[5];
+>>>>>>> af412701c683d3720e06ef5e9d172fbc35531550
 
     // Abrindo arquivo para leitura e exibicao dos dados
     if(!(file = fopen("db_veiculos", "r+"))){
         printf("ERRO: Nao foi possivel localizar o arquivo");
         exit(1);
     } else {
+<<<<<<< HEAD
 
         printf("Arquivo foi aberto.\n");
 
@@ -282,6 +290,35 @@ void editar_veiculo(FILE *file){
             default:
                 printf("Opção inválida, tente novamente\n");
             break;
+        }
+=======
+        printf("Arquivo foi aberto");
+        while(fgets(temp, 255, file) != NULL){
+
+            strcpy(car[i]->id, atoi(strtok(temp, ";")));
+            strcpy(car[i]->model, strtok(NULL, ";"));
+            strcpy(car[i]->brand, strtok(NULL, ";"));
+            strcpy(car[i]->color, strtok(NULL, ";"));
+            car[i]->year = atoi(strtok(NULL, ";"));
+            car[i]->weight = atof(strtok(NULL, ";"));
+            car[i]->price = atof(strtok(NULL, ";"));
+            i++;
+        }
+
+        printf("Informe o ID do carro que deseja alterar: ");
+        scanf("%i", &item);
+>>>>>>> af412701c683d3720e06ef5e9d172fbc35531550
+
+        printf("O que você deseja alterar?\n");
+        printf("1-Modelo\n2-Marca\n3-Cor\n4-Ano\n5-Peso\n6-Preço\n");
+        scanf("%i", op);
+
+        switch(op){
+
+            case 1:
+                printf("%s", car[item]->model);
+            break;
+
         }
 
         fclose(file);
