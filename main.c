@@ -153,20 +153,18 @@ void consulta_veiculo(FILE *file){
 void editar_veiculo(FILE *file){
 
 
-    int id, op, i, count, ret;
-    char temp[255], aux[MAX_LENGTH];
-    car car[5];
+    int id, op, i = 0, count = 0, ret = 0, iaux, edited = 0;
+    float faux;
+    char temp[255], caux[MAX_LENGTH];
+    car car[3];
 
     // Abrindo arquivo para leitura e exibicao dos dados
     if(!(file = fopen("db_veiculos", "r+"))){
-        printf("ERRO: Nao foi possivel localizar o arquivo");
+        printf("ERRO: Nao foi possivel localizar o arquivo ou ele nao existe\n");
         exit(1);
     } else {
 
-
         printf("Arquivo foi aberto.\n");
-
-        i = 0;
 
         while(fgets(temp, 255, file) != NULL){
 
@@ -180,132 +178,172 @@ void editar_veiculo(FILE *file){
             i++;
         }
         count = i;
-        printf("contador: %i\n", count);
 
-        printf("Informe o ID do carro que deseja alterar: \n");
-        scanf("%i", &id);
-        id -= 1;
+        do{
 
-        printf("\tID: %i\n", car[id].id);
-        printf("\tMODELO: %s\n", car[id].model);
-        printf("\tMARCA: %s\n", car[id].brand);
-        printf("\tCOR: %s\n", car[id].color);
-        printf("\tANO: %i\n", car[id].year);
-        printf("\tPESO: %f\n", car[id].weight);
-        printf("\tPRECO: %f\n\n", car[id].price);
+            printf("Informe o ID do carro que deseja alterar: \n");
+            scanf("%i", &id);
+            id -= 1;
 
-        printf("O que você deseja alterar?\n");
-        printf("1-Modelo\n2-Marca\n3-Cor\n4-Ano\n5-Peso\n6-Preço\n");
-        scanf("%i", &op);
+            print_car(car, id);
 
-        switch(op){
+            printf("O que você deseja alterar?\n");
+            printf("1-Modelo\n2-Marca\n3-Cor\n4-Ano\n5-Peso\n6-Preço\n\n");
+            scanf("%i", &op);
 
-            case 1: // Altera a string do modelo
-                printf("Informe o novo modelo: ");
-                setbuf(stdin, NULL);
-                gets(aux);
-                toUpper(aux);
-                do{
-                    printf("Cofirma a alteração?\nMODELO: %s -> %s\n1-SIM / 2-NÃo\n", car[id].model, aux);
-                    scanf("%i", &op);
-                    if(op != 1 & op != 2) printf("Opção inválida! Tente novamente.\n");
-                }while(op != 1 && op != 2);
+            switch(op){
 
-                if(op == 1) strcpy(car[id].model, aux);
-                else printf("Sem alterações.\n");
+                case 1: // Altera a string do modelo
+                    printf("Informe o novo modelo: ");
+                    setbuf(stdin, NULL);
+                    gets(caux);
+                    toUpper(caux);
+                    do{
+                        printf("Cofirma a alteração?\nMODELO: %s -> %s\n1-SIM / 2-NÃo\n", car[id].model, caux);
+                        scanf("%i", &op);
+                        if(op != 1 & op != 2) printf("Opção inválida! Tente novamente.\n");
+                    }while(op != 1 && op != 2);
 
-                printf("\tID: %i\n", car[id].id);
-                printf("\tMODELO: %s\n", car[id].model);
-                printf("\tMARCA: %s\n", car[id].brand);
-                printf("\tCOR: %s\n", car[id].color);
-                printf("\tANO: %i\n", car[id].year);
-                printf("\tPESO: %f\n", car[id].weight);
-                printf("\tPRECO: %f\n", car[id].price);
+                    if(op == 1){
+                       strcpy(car[id].model, caux);
+                       edited = 1;
+                    }
+                    else printf("Sem alterações.\n");
 
-            break;
+                break;
 
-            case 2: // Altera a string da marca
-                printf("Informe a nova marca: ");
-                setbuf(stdin, NULL);
-                gets(aux);
-                toUpper(aux);
-                do{
-                    printf("Cofirma a alteração?\nMARCA: %s -> %s\n1-SIM / 2-NÃo\n", car[id].brand, aux);
-                    scanf("%i", &op);
-                    if(op != 1 & op != 2) printf("Opção inválida! Tente novamente.\n");
-                }while(op != 1 && op != 2);
+                case 2: // Altera a string da marca
+                    printf("Informe a nova marca: ");
+                    setbuf(stdin, NULL);
+                    gets(caux);
+                    toUpper(caux);
+                    do{
+                        printf("Cofirma a alteração?\nMARCA: %s -> %s\n1-SIM / 2-NÃo\n", car[id].brand, caux);
+                        scanf("%i", &op);
+                        if(op != 1 & op != 2) printf("Opção inválida! Tente novamente.\n");
+                    }while(op != 1 && op != 2);
 
-                if(op == 1) strcpy(car[id].brand, aux);
-                else printf("Sem alterações.\n");
+                    if(op == 1){
+                        strcpy(car[id].brand, caux);
+                        edited = 1;
+                    }
+                    else printf("Sem alterações.\n");
 
-                printf("\tID: %i\n", car[id].id);
-                printf("\tMODELO: %s\n", car[id].model);
-                printf("\tMARCA: %s\n", car[id].brand);
-                printf("\tCOR: %s\n", car[id].color);
-                printf("\tANO: %i\n", car[id].year);
-                printf("\tPESO: %f\n", car[id].weight);
-                printf("\tPRECO: %f\n", car[id].price);
-            break;
+                break;
 
-            case 3:
-                printf("Informe a nova cor: ");
-                setbuf(stdin, NULL);
-                gets(aux);
-                toUpper(aux);
-                do{
-                    printf("Cofirma a alteração?\nCOR: %s -> %s\n1-SIM / 2-NÃo\n", car[id].color, aux);
-                    scanf("%i", &op);
-                    if(op != 1 & op != 2) printf("Opção inválida! Tente novamente.\n");
-                }while(op != 1 && op != 2);
+                case 3:
+                    printf("Informe a nova cor: ");
+                    setbuf(stdin, NULL);
+                    gets(caux);
+                    toUpper(caux);
+                    do{
+                        printf("Cofirma a alteração?\nCOR: %s -> %s\n1-SIM / 2-NÃo\n", car[id].color, caux);
+                        scanf("%i", &op);
+                        if(op != 1 & op != 2) printf("Opção inválida! Tente novamente.\n");
+                    }while(op != 1 && op != 2);
 
-                if(op == 1) strcpy(car[id].color, aux);
-                else printf("Sem alterações.\n");
+                    if(op == 1){
+                        strcpy(car[id].color, caux);
+                        edited = 1;
+                    }
+                    else printf("Sem alterações.\n");
 
-                printf("\tID: %i\n", car[id].id);
-                printf("\tMODELO: %s\n", car[id].model);
-                printf("\tMARCA: %s\n", car[id].brand);
-                printf("\tCOR: %s\n", car[id].color);
-                printf("\tANO: %i\n", car[id].year);
-                printf("\tPESO: %f\n", car[id].weight);
-                printf("\tPRECO: %f\n", car[id].price);
-            break;
+                break;
 
-            case 4:
+                case 4:
+                    printf("Informe o novo ano: ");
+                    scanf("%i", &iaux);
 
-            break;
+                    do{
+                        printf("Cofirma a alteração?\nANO: %i -> %i\n1-SIM / 2-NÃo\n", car[id].year, iaux);
+                        scanf("%i", &op);
+                        if(op != 1 & op != 2) printf("Opção inválida! Tente novamente.\n");
+                    }while(op != 1 && op != 2);
 
-            case 5:
+                    if(op == 1){
+                        car[id].year = iaux;
+                        edited = 1;
+                    }
+                    else printf("Sem alterações.\n");
 
-            break;
+                break;
 
-            case 6:
+                case 5:
+                    printf("Informe o novo peso: ");
+                    scanf("%f", &faux);
 
-            break;
+                    do{
+                        printf("Cofirma a alteração?\nPESO: %f -> %f\n1-SIM / 2-NÃo\n", car[id].weight, faux);
+                        scanf("%i", &op);
+                        if(op != 1 & op != 2) printf("Opção inválida! Tente novamente.\n");
+                    }while(op != 1 && op != 2);
 
-            default:
-                printf("Opção inválida, tente novamente\n");
-            break;
-        }
+                    if(op == 1){
+                        car[id].weight = faux;
+                        edited = 1;
+                    } else printf("Sem alterações.\n");
+
+                break;
+
+                case 6:
+                    printf("Informe o novo preco: ");
+                    scanf("%f", &faux);
+
+                    do{
+                        printf("Cofirma a alteração?\nPRECO: %f -> %f\n1-SIM / 2-NÃo\n", car[id].price, faux);
+                        scanf("%i", &op);
+                        if(op != 1 & op != 2) printf("Opção inválida! Tente novamente.\n");
+                    }while(op != 1 && op != 2);
+
+                    if(op == 1){
+                        car[id].price = faux;
+                        edited = 1;
+                    }
+                    else printf("Sem alterações.\n");
+
+                break;
+
+                default:
+                    printf("Opção inválida, tente novamente\n");
+                break;
+            }
+
+
+
+            do{
+                printf("Continuar com as alteraçoes?\n1-SIM / 2-NÃo\n");
+                scanf("%i", &op);
+                if(op != 1 & op != 2) printf("Opção inválida! Tente novamente.\n");
+            }while(op != 1 && op != 2);
+
+        }while(op != 2);
 
         fclose(file);
-    }
 
-    /*ret = remove("db_veiculos");
+        print_car(car, id);
 
-    if(ret == 0){
+        if(edited == 1){
 
-    }
+            ret = remove("db_veiculos");
 
-    if(!(file = fopen("db_veiculos", "w"))){
-        printf("ERRO: Não foi possível abrir o arquivo para gravação dos dados");
-    } else {
+            if(ret == 0 && file == fopen("db_veiculos", "w")){
+                printf("arquivo antigo foi deletado.\nGerando novo arquivo com as alterações...\n");
+                i = 0;
+                do{
+                    fprintf(file, "%i;%s;%s;%s;%i;%.2f;%.2f\n", car[i].id, car[i].model, car[i].brand, car[i].color, car[i].year, car[i].weight, car[i].price);
+                    i++;
+                }while(i < count);
 
-        for(i = 0; i < (count - 1)){
+
+                fclose(file);
+
+            } else printf("Erro ao tentar excluir o arquivo.\n");
 
         }
-
     }
-    */
+
+    printf("Voltando para o menu inicial...\n");
+
 }
 // funcao que deleta um registro
 void excluir_veiculo(FILE *file){
@@ -316,7 +354,7 @@ void excluir_veiculo(FILE *file){
     fpos_t position;
 
     if(!(file = fopen("db_veiculos", "r+"))){
-        printf("ERRO: Nao foi possivel localizar o arquivo");
+        printf("ERRO: Nao foi possivel localizar o arquivo ou ele nao existe");
         exit(1);
     } else {
 
@@ -443,4 +481,16 @@ void consult_menu(FILE *file){
 
         }
     }while(op != 3);
+}
+// printa na tela os dados de um carro a partir de um array
+void print_car(car car[], int id){
+
+    printf("\tID: %i\n", car[id].id);
+    printf("\tMODELO: %s\n", car[id].model);
+    printf("\tMARCA: %s\n", car[id].brand);
+    printf("\tCOR: %s\n", car[id].color);
+    printf("\tANO: %i\n", car[id].year);
+    printf("\tPESO: %.2fkg\n", car[id].weight);
+    printf("\tPRECO: R$%.2f\n", car[id].price);
+
 }
