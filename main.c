@@ -114,7 +114,7 @@ void cadast_veiculo(FILE *file){
     toUpper(car.color);
 
     // Abrindo arquivo para escrever os dados
-    if(!(file = fopen("db_veiculos", "a"))){
+    if(!(file = fopen("db_veiculos.txt", "a"))){
         printf("ERRO: Nao foi possivel localizar o arquivo");
         exit(1);
     } else {
@@ -125,13 +125,13 @@ void cadast_veiculo(FILE *file){
     fclose(file);
 
 }
-// fun��o que mostra na tela todos os registros
+// funcao que mostra na tela todos os registros
 void consulta_veiculo(FILE *file){
 
     char temp[255];
     int id;
     // Abrindo arquivo para leitura e exibi��o dos dados
-    if(!(file = fopen("db_veiculos", "r"))){
+    if(!(file = fopen("db_veiculos.txt", "r"))){
         printf("ERRO: Nao foi possivel localizar o arquivo");
         exit(1);
     } else {
@@ -156,10 +156,10 @@ void editar_veiculo(FILE *file){
     int id, op, i = 0, count = 0, ret = 0, iaux, edited = 0;
     float faux;
     char temp[255], caux[MAX_LENGTH];
-    car car[3];
+    car car[countLines(file)];
 
     // Abrindo arquivo para leitura e exibicao dos dados
-    if(!(file = fopen("db_veiculos", "r+"))){
+    if(!(file = fopen("db_veiculos.txt", "r+"))){
         printf("ERRO: Nao foi possivel localizar o arquivo ou ele nao existe\n");
         exit(1);
     } else {
@@ -180,10 +180,12 @@ void editar_veiculo(FILE *file){
         count = i;
 
         do{
+            do{
+                printf("Informe o ID do carro que deseja alterar: \n");
+                scanf("%i", &id);
+                id -= 1;
+            }while(id > (countLines(file) - 1) || id < 0);
 
-            printf("Informe o ID do carro que deseja alterar: \n");
-            scanf("%i", &id);
-            id -= 1;
 
             print_car(car, id);
 
@@ -324,9 +326,9 @@ void editar_veiculo(FILE *file){
 
         if(edited == 1){
 
-            ret = remove("db_veiculos");
+            ret = remove("db_veiculos.txt");
 
-            if(ret == 0 && file == fopen("db_veiculos", "w")){
+            if(ret == 0 && file == fopen("db_veiculos.txt", "w")){
                 printf("arquivo antigo foi deletado.\nGerando novo arquivo com as alterações...\n");
                 i = 0;
                 do{
@@ -353,7 +355,7 @@ void excluir_veiculo(FILE *file){
     int id, b;  // B de boolean
     fpos_t position;
 
-    if(!(file = fopen("db_veiculos", "r+"))){
+    if(!(file = fopen("db_veiculos.txt", "r+"))){
         printf("ERRO: Nao foi possivel localizar o arquivo ou ele nao existe");
         exit(1);
     } else {
@@ -391,37 +393,44 @@ int geraId(FILE *file){
     char temp[100];
     int id;
 
-    if(!(file = fopen("db_veiculos", "r"))){
+    if(!(file = fopen("db_veiculos.txt", "r"))){
         printf("ERRO: Nao foi possivel localizar o arquivo");
         exit(1);
     } else {
 
         id = 0;
         while(fgets(temp, 100, file) != NULL){
-
-
-            //printf("ID: %i\n", atoi(strtok(temp, ";")));
-
-            /*do{
-                printf("%s\n", strtok(NULL, ";"));
-                i++;
-            }while(i != 1);*/
-
             id++;
         }
 
         fclose(file);
     }
-    //printf("%i\n", id + 1);
     return id + 1;
+}
+int countLines(FILE *file){
 
+    char temp[100];
+    int id;
+
+    if(!(file = fopen("db_veiculos.txt", "r"))){
+        printf("ERRO: Nao foi possivel localizar o arquivo");
+        exit(1);
+    } else {
+
+        id = 0;
+        while(fgets(temp, 100, file) != NULL){
+            id++;
+        }
+        fclose(file);
+    }
+    return id;
 }
 void consult_indiv(FILE *file){
 
     char temp[100];
     int id, b;  // B de boolean
 
-    if(!(file = fopen("db_veiculos", "r"))){
+    if(!(file = fopen("db_veiculos.txt", "r"))){
         printf("ERRO: Nao foi possivel localizar o arquivo");
         exit(1);
     } else {
