@@ -20,7 +20,7 @@ typedef struct car{
 
 
 // programa principal
-void main(){
+void main(void){
 
     setlocale(LC_ALL, "Portuguese");
 
@@ -159,7 +159,7 @@ void editar_veiculo(FILE *file){
     car car[countLines(file)];
 
     // Abrindo arquivo para leitura e exibicao dos dados
-    if(!(file = fopen("db_veiculos.txt", "r+"))){
+    if(!(file = fopen("db_veiculos.txt", "r"))){
         printf("ERRO: Nao foi possivel localizar o arquivo ou ele nao existe\n");
         exit(1);
     } else {
@@ -201,7 +201,7 @@ void editar_veiculo(FILE *file){
                     gets(caux);
                     toUpper(caux);
                     do{
-                        printf("Cofirma a alteração?\nMODELO: %s -> %s\n1-SIM / 2-NÃo\n", car[id].model, caux);
+                        printf("Cofirma a alteração?\nMODELO: %s -> %s\n1-SIM / 2-NÃO\n", car[id].model, caux);
                         scanf("%i", &op);
                         if(op != 1 & op != 2) printf("Opção inválida! Tente novamente.\n");
                     }while(op != 1 && op != 2);
@@ -239,7 +239,7 @@ void editar_veiculo(FILE *file){
                     gets(caux);
                     toUpper(caux);
                     do{
-                        printf("Cofirma a alteração?\nCOR: %s -> %s\n1-SIM / 2-NÃo\n", car[id].color, caux);
+                        printf("Cofirma a alteração?\nCOR: %s -> %s\n1-SIM / 2-NÃO\n", car[id].color, caux);
                         scanf("%i", &op);
                         if(op != 1 & op != 2) printf("Opção inválida! Tente novamente.\n");
                     }while(op != 1 && op != 2);
@@ -275,7 +275,7 @@ void editar_veiculo(FILE *file){
                     scanf("%f", &faux);
 
                     do{
-                        printf("Cofirma a alteração?\nPESO: %f -> %f\n1-SIM / 2-NÃo\n", car[id].weight, faux);
+                        printf("Cofirma a alteração?\nPESO: %f -> %f\n1-SIM / 2-NÃO\n", car[id].weight, faux);
                         scanf("%i", &op);
                         if(op != 1 & op != 2) printf("Opção inválida! Tente novamente.\n");
                     }while(op != 1 && op != 2);
@@ -292,7 +292,7 @@ void editar_veiculo(FILE *file){
                     scanf("%f", &faux);
 
                     do{
-                        printf("Cofirma a alteração?\nPRECO: %f -> %f\n1-SIM / 2-NÃo\n", car[id].price, faux);
+                        printf("Cofirma a alteração?\nPRECO: %f -> %f\n1-SIM / 2-NÃO\n", car[id].price, faux);
                         scanf("%i", &op);
                         if(op != 1 & op != 2) printf("Opção inválida! Tente novamente.\n");
                     }while(op != 1 && op != 2);
@@ -313,7 +313,7 @@ void editar_veiculo(FILE *file){
 
 
             do{
-                printf("Continuar com as alteraçoes?\n1-SIM / 2-NÃo\n");
+                printf("Continuar com as alteraçoes?\n1-SIM / 2-NÃO\n");
                 scanf("%i", &op);
                 if(op != 1 & op != 2) printf("Opção inválida! Tente novamente.\n");
             }while(op != 1 && op != 2);
