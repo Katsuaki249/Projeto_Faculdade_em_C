@@ -32,7 +32,7 @@ void main(void){
         system("CLS");
 
         printf("= Menu Inicial -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
-        printf("= 1-cadastrar   2-consultar   3-editar   4-excluir   5-sair =\n");
+        printf("= 1-cadastrar   2-consultar   3-editar   4-Excluir   5-sair =\n");
         printf("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
         scanf("%i", &op);
 
@@ -348,33 +348,56 @@ void editar_veiculo(FILE *file){
 
 }
 // funcao que deleta um registro
-void excluir_veiculo(FILE *file){
+int excluir_veiculo(FILE *file){
+    
+    char temp[255];
+    int id, ret, i, count;
+    car car[countLines(file)];
 
-    char temp[100];
-    char excl[] = {'E', 'X', 'C'};
-    int id, b;  // B de boolean
-    fpos_t position;
-
-    if(!(file = fopen("db_veiculos.txt", "r+"))){
-        printf("ERRO: Nao foi possivel localizar o arquivo ou ele nao existe");
+    if(!(file = fopen("db_veiculos.txt", "r"))){
+        printf("ERRO: Nao foi possivel localizar o arquivo ou ele nao existe\n");
         exit(1);
     } else {
 
-        printf("Digite a posicao: \n");
-        scanf("%i", &id);
+        printf("Arquivo foi aberto.\n");
 
-        while(fgets(temp, 100, file) != NULL){
+        while(fgets(temp, 255, file) != NULL){
 
-            if(atoi(strtok(temp, ";")) == id - 1){
-
-                fseek(file, 0, SEEK_CUR);
-                //fprintf("%i;", 0);
-
-
-                b = 1;
-            }
+            car[i].id =  atoi(strtok(temp, ";"));
+            strcpy(car[i].model, strtok(NULL, ";"));
+            strcpy(car[i].brand, strtok(NULL, ";"));
+            strcpy(car[i].color, strtok(NULL, ";"));
+            car[i].year = atoi(strtok(NULL, ";"));
+            car[i].weight = atof(strtok(NULL, ";"));
+            car[i].price = atof(strtok(NULL, ";"));
+            i++;
         }
-        b == 1 ? printf("O registro foi removido!\n") : printf("Registro inexistente!\n");
+        count = i;
+
+        do{
+            printf("Informe o ID do carro que deseja excluir: \n");
+            scanf("%i", &id);
+            id -= 1;
+        }while(id > (countLines(file) - 1) || id < 0);
+        
+        print_car(car, id);
+        
+        fclose(file);
+    
+        ret = remove("db_veiculos.txt");
+
+            if(ret == 0 && file == fopen("db_veiculos.txt", "w")){
+                printf("arquivo antigo foi deletado.\nGerando novo arquivo com as alterações...\n");
+                i = 0;
+                do{
+                    if(car[i].id != id + 1) {
+                        fprintf(file, "%i;%s;%s;%s;%i;%.2f;%.2f\n", car[i].id, car[i].model, car[i].brand, car[i].color, car[i].year, car[i].weight, car[i].price);
+                    }
+                    i++;
+                }while(i < count);
+
+            } else printf("Erro ao tentar excluir o arquivo.\n");
+        
         fclose(file);
     }
 }
@@ -393,19 +416,24 @@ int geraId(FILE *file){
     char temp[100];
     int id;
 
-    if(!(file = fopen("db_veiculos.txt", "r"))){
-        printf("ERRO: Nao foi possivel localizar o arquivo");
+    if(!(file = fopen("id.txt", "w+"))){
+        printf("Não foi possível localizar o arquivo!");
         exit(1);
     } else {
-
-        id = 0;
-        while(fgets(temp, 100, file) != NULL){
+        
+        if(ftell(file) == 0) {
+            id = atoi(fgets(temp, 100, file));
             id++;
+            fprintf(file, "%i", id);    
+        } else {
+            id = 1;
+            fprintf(file, "%i", id);
         }
-
-        fclose(file);
+        
+        return id;
+        fclose(file);    
     }
-    return id + 1;
+    return id;
 }
 int countLines(FILE *file){
 
